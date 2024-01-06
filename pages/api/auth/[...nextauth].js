@@ -18,6 +18,32 @@ export const authOptions = {
         token.expires_at = account.expires_at
         token.athlete = account.athlete
       }
+
+      const now = Date.now() / 1000;
+      if (token.expires_at && now > token.expires_at) {
+        console.log("expired")
+        const url = `https://www.strava.com/oauth/token`;
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            client_id: process.env.STRAVA_CLIENT_ID,
+            client_secret: process.env.STRAVA_CLIENT_SECRET,
+            grant_type: 'refresh_token',
+            refresh_token: token.refresh_token,
+          }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          token.access_token = data.access_token;
+          token.refresh_token = data.refresh_token;
+          token.expires_at = data.expires_at;
+        }
+      }
+
       return token
     },
     async session({ session, token, user }) {
