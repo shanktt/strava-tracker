@@ -19,9 +19,9 @@ export const authOptions = {
         token.athlete = account.athlete
       }
 
+      // Refresh the token if expired
       const now = Date.now() / 1000;
       if (token.expires_at && now > token.expires_at) {
-        console.log("expired")
         const url = `https://www.strava.com/oauth/token`;
         const response = await fetch(url, {
           method: 'POST',
