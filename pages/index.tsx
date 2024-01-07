@@ -83,9 +83,6 @@ export default function Home() {
           onClick: (event) => (activity) => {
             alert(JSON.stringify(activity));
           },
-          onMouseEnter: (event) => (activity) => {
-            console.log('on mouse enter');
-          },
         }}
         theme={{
           light: ["#383838", "#FFDCCB", "#FFC2A4", "#FF8E55", "#FF5C0A",],
