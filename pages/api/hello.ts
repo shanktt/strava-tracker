@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/pages/api/auth/[...nextauth]'
-import {Activity, ApiResponse} from '@/types/types'
+import {StravaData, ApiResponse} from '@/types/types'
 
 export default async function handler(
   req: NextApiRequest,
@@ -22,8 +22,8 @@ export default async function handler(
       }
     })
     .then(response => response.json())
-    .then((data: Activity[]) => {
-      // Extract only the distance from each activity
+    .then((data: StravaData[]) => {
+      // Extract only the distance and start date from each activity
       const distances = data.map(activity => ({
           distance: activity.distance, 
           start_date: activity.start_date

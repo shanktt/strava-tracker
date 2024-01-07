@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Button from '@/components/login-btn'
-import { Activity, ApiResponse } from '@/types/types'
+import { StravaData, ApiResponse } from '@/types/types'
 import ActivityCalendar from 'react-activity-calendar';
-
-// interface DateDistanceBins {
-//   totalDistance: number
-//   date: Date
-//   // colorCode: string
-// }
 
 const shades: Array<[number, string, number]> = [
   [0.25, "#FE8548", 1],
@@ -20,20 +14,18 @@ interface DateDistanceBins {
   [key: string]: number;
 }
 
-type DailyData = {
+type Activity = {
   date: string;
   count: number;
   level: number;
-  // distance: number;
-  // color: string;
 };
 
 
 export default function Home() {
-  const [dailyData, setDistances] = useState<DailyData[]>([]);
+  const [dailyData, setDistances] = useState<Activity[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  function binData(data: Activity[]): DailyData[] {
+  function binData(data: StravaData[]): Activity[] {
     const bins = data.reduce((acc, d) => {
       const date = new Date(d.start_date).toISOString().split('T')[0];
       if (!acc[date]) {
@@ -44,7 +36,7 @@ export default function Home() {
       return acc;
     }, {} as DateDistanceBins);
 
-    const dailyData: DailyData[] = [];
+    const dailyData: Activity[] = [];
     const maxDistance = Math.max(...Object.values(bins))
     console.log(maxDistance);
     Object.keys(bins).forEach((key) => {
@@ -60,7 +52,7 @@ export default function Home() {
       }
     }) 
 
-    return [...dailyData].reverse();
+    return dailyData.reverse();
   }
 
 
@@ -73,7 +65,6 @@ export default function Home() {
       } else {
         const DateDistanceBins = binData(data);
         setDistances(DateDistanceBins);
-        //console.log(DateDistanceBins)
       }
     }).catch(eror => {
       console.error('Fetch error:', error);
@@ -97,8 +88,8 @@ export default function Home() {
           },
         }}
         theme={{
-          light: ["#383838", "#FFDCCB", "#FFC2A4", "#FF8E55", "#FF5C0A",],// "#B33E00"],
-          dark:  ["#383838", "#FFDCCB", "#FFC2A4", "#FF8E55", "#FF5C0A",]// "#B33E00"]
+          light: ["#383838", "#FFDCCB", "#FFC2A4", "#FF8E55", "#FF5C0A",],
+          dark:  ["#383838", "#FFDCCB", "#FFC2A4", "#FF8E55", "#FF5C0A",]
         }}
       ></ActivityCalendar>
     </div>
