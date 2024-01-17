@@ -37,7 +37,6 @@ const Calendar: React.FC<CalendarProps> = ({ year, data }) => {
 
     const endDate = getEndDate(year);
     const calculateWeeks = getWeeks(days, endDate);
-    // console.log(calculateWeeks)
     setWeeks(calculateWeeks);
   }, [year, data]);
 
@@ -46,13 +45,29 @@ const Calendar: React.FC<CalendarProps> = ({ year, data }) => {
     let week: Activity[] = [];
     for (let day of days.values()) {
       week.push(day);
-      if (new Date(day.date).getDay() === 6) {
-        // if it's Sunday
-        weeks.push(week);
+      if (new Date(day.date).getDay() === 5) {
+          // if it's Saturday
+          weeks.push(week);
         week = [];
       } else if (day.date === endDate.toISOString().split("T")[0]) {
         // if it's the last day of the year
         weeks.push(week);
+      }
+    }
+
+    if (weeks[0].length < 7) {
+      // Pad the first week with days from the previous year
+      // If the current year doesn't start on Monday
+
+      const daysNeeded = 7 - weeks[0].length;
+      const prevYear = year - 1;
+      const lastDayPrevYear = new Date(prevYear, 11, 31);
+      for (let i = 0; i < daysNeeded; i++) {
+        const date = new Date(lastDayPrevYear);
+        date.setDate(lastDayPrevYear.getDate() - i);
+        const dateString = date.toISOString().split("T")[0];
+        const activity: Activity = { date: dateString, count: 0, value: 0, isPadded: true};
+        weeks[0].unshift(activity);
       }
     }
     return weeks;
@@ -62,10 +77,13 @@ const Calendar: React.FC<CalendarProps> = ({ year, data }) => {
     return week.map((day) => (
       <div
         key={day.date}
+        className={day.date}
         style={{
           backgroundColor:
-            day.value === 0
-              ? "black"
+            day.isPadded
+              ? "transparent"
+              : day.count === 0
+              ? "white"
               : `rgba(0, 255, 0, ${day.value / Math.max(...data.map((d) => d.value))})`,
           width: "10px",
           height: "10px",
@@ -84,7 +102,7 @@ const Calendar: React.FC<CalendarProps> = ({ year, data }) => {
       }}
     >
       {weeks.map((week, idx) => (
-        <div key={idx} style={{ display: "flex", flexDirection: "column" }}>
+        <div key={idx} className={idx.toString()} style={{ display: "flex", flexDirection: "column" }}>
           {renderWeek(week)}
         </div>
       ))}

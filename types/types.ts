@@ -9,4 +9,5 @@ export type Activity = {
   date: string;
   count: number;
   value: number;
+  isPadded?: boolean;
 };
