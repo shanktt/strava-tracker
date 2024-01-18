@@ -4,6 +4,7 @@ import { StravaData, ApiResponse, Activity } from "@/types/types";
 import { useSession, signIn, signOut } from "next-auth/react";
 import dynamic from "next/dynamic";
 const Button = dynamic(() => import("@/components/login-btn"), { ssr: false });
+import Calendar from "@/components/Calendar";
 
 const shades: Array<[number, string, number]> = [
   [0.25, "#FE8548", 1],
@@ -77,6 +78,7 @@ export default function Home() {
         .then((response) => response.json())
         .then((data: StravaData[]) => {
           const DateDistanceBins = binData(data);
+          console.log(DateDistanceBins);
           setDistances(DateDistanceBins);
         })
         .catch((eror) => {
@@ -86,5 +88,9 @@ export default function Home() {
     }
   }, [session]);
 
-  return <></>;
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <Calendar data={dailyData} year={2023} />
+    </div>
+  );
 }

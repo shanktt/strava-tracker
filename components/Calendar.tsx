@@ -15,6 +15,8 @@ const getEndDate = (year: number): Date => {
   return new Date(year, 11, 31);
 };
 
+const colors = ["#383838", "#FFDCCB", "#FFC2A4", "#FF8E55", "#FF5C0A"];
+
 const Calendar: React.FC<CalendarProps> = ({ year, data }) => {
   const [weeks, setWeeks] = useState<Activity[][]>([]);
 
@@ -32,7 +34,7 @@ const Calendar: React.FC<CalendarProps> = ({ year, data }) => {
 
     // Fill the Map with the provided data
     data.forEach((day) => {
-        days.set(day.date, day);
+      days.set(day.date, day);
     });
 
     const endDate = getEndDate(year);
@@ -46,8 +48,8 @@ const Calendar: React.FC<CalendarProps> = ({ year, data }) => {
     for (let day of days.values()) {
       week.push(day);
       if (new Date(day.date).getDay() === 5) {
-          // if it's Saturday
-          weeks.push(week);
+        // if it's Saturday
+        weeks.push(week);
         week = [];
       } else if (day.date === endDate.toISOString().split("T")[0]) {
         // if it's the last day of the year
@@ -66,7 +68,12 @@ const Calendar: React.FC<CalendarProps> = ({ year, data }) => {
         const date = new Date(lastDayPrevYear);
         date.setDate(lastDayPrevYear.getDate() - i);
         const dateString = date.toISOString().split("T")[0];
-        const activity: Activity = { date: dateString, count: 0, value: 0, isPadded: true};
+        const activity: Activity = {
+          date: dateString,
+          count: 0,
+          value: 0,
+          isPadded: true,
+        };
         weeks[0].unshift(activity);
       }
     }
@@ -77,17 +84,14 @@ const Calendar: React.FC<CalendarProps> = ({ year, data }) => {
     return week.map((day) => (
       <div
         key={day.date}
-        className={day.date}
+        // className={day.date + "w-4 h-4 m-1 rounded-sm"}
+        className="w-[10px] h-[10px] m-[1px] rounded-sm"
         style={{
-          backgroundColor:
-            day.isPadded
-              ? "transparent"
-              : day.count === 0
-              ? "white"
-              : `rgba(0, 255, 0, ${day.value / Math.max(...data.map((d) => d.value))})`,
-          width: "10px",
-          height: "10px",
-          margin: "1px",
+          backgroundColor: day.isPadded ? "transparent" : colors[day.value],
+        //   width: "10px",
+        //   height: "10px",
+        //   margin: "1px",
+        //   borderRadius: "2px",
         }}
       />
     ));
@@ -102,7 +106,11 @@ const Calendar: React.FC<CalendarProps> = ({ year, data }) => {
       }}
     >
       {weeks.map((week, idx) => (
-        <div key={idx} className={idx.toString()} style={{ display: "flex", flexDirection: "column" }}>
+        <div
+          key={idx}
+          className={idx.toString()}
+          style={{ display: "flex", flexDirection: "column" }}
+        >
           {renderWeek(week)}
         </div>
       ))}
