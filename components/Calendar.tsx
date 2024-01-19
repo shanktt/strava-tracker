@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 type CalendarProps = {
   year: number;
   data: Activity[];
+  loading: boolean;
 };
 
 const isLeapYear = (year: number): boolean => {
@@ -16,7 +17,7 @@ const getEndDate = (year: number): Date => {
 
 const colors = ["#383838", "#FFDCCB", "#FFC2A4", "#FF8E55", "#FF5C0A"];
 
-const Calendar: React.FC<CalendarProps> = ({ year, data }) => {
+const Calendar: React.FC<CalendarProps> = ({ year, data, loading }) => {
   const [weeks, setWeeks] = useState<Activity[][]>([]);
 
   useEffect(() => {
@@ -80,12 +81,13 @@ const Calendar: React.FC<CalendarProps> = ({ year, data }) => {
   };
 
   const renderWeek = (week: Activity[]) => {
-    return week.map((day) => (
+    return week.map((day, idx) => (
       <div
         key={day.date}
-        className="w-4 h-4 mb-1 rounded-sm"
+        className={`w-4 h-4 mb-1 rounded-sm ${loading ? `pulsing-column` : ""}`}
         style={{
           backgroundColor: day.isPadded ? "transparent" : colors[day.value],
+          animationDelay: loading ? `${idx * 0.1}s` : "0s",
         }}
       />
     ));
@@ -96,14 +98,11 @@ const Calendar: React.FC<CalendarProps> = ({ year, data }) => {
       style={{
         display: "grid",
         gridTemplateColumns: `repeat(${weeks.length}, 10px)`,
-        columnGap: "0.5rem"
+        columnGap: "0.5rem",
       }}
     >
       {weeks.map((week, idx) => (
-        <div
-          key={idx}
-          className={`col-${idx.toString()} flex flex-col`}
-        >
+        <div key={idx} className={`col-${idx.toString()} flex flex-col`}>
           {renderWeek(week)}
         </div>
       ))}

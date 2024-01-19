@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-// import Button from '@/components/login-btn'
-import { StravaData, ApiResponse, Activity } from "@/types/types";
+import Button from "@/components/login-btn";
+import { StravaData, Activity } from "@/types/types";
 import { useSession, signIn, signOut } from "next-auth/react";
-import dynamic from "next/dynamic";
-const Button = dynamic(() => import("@/components/login-btn"), { ssr: false });
 import Calendar from "@/components/Calendar";
 
 const shades: Array<[number, string, number]> = [
@@ -17,16 +15,11 @@ interface DateDistanceBins {
   [key: string]: number;
 }
 
-// type Activity = {
-//   date: string;
-//   count: number;
-//   value: number;
-// };
-
 export default function Home() {
   const { data: session } = useSession();
   const [dailyData, setDistances] = useState<Activity[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   function binData(data: StravaData[]): Activity[] {
     const bins = data.reduce((acc, d) => {
@@ -80,6 +73,7 @@ export default function Home() {
           const DateDistanceBins = binData(data);
           console.log(DateDistanceBins);
           setDistances(DateDistanceBins);
+          setLoading(false);
         })
         .catch((eror) => {
           console.error("Fetch error:", error);
@@ -89,8 +83,11 @@ export default function Home() {
   }, [session]);
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <Calendar data={dailyData} year={2023} />
+    <div className="flex flex-col justify-center items-center h-screen">
+      <div className="relative top-20 z-10">
+        <Button />
+      </div>
+      <Calendar data={dailyData} year={2023} loading={loading} />
     </div>
   );
 }
