@@ -19,8 +19,12 @@ const colors = ["#383838", "#FFDCCB", "#FFC2A4", "#FF8E55", "#FF5C0A"];
 
 const Calendar: React.FC<CalendarProps> = ({ year, data, loading }) => {
   const [weeks, setWeeks] = useState<Activity[][]>([]);
+  const [totalMiles, setTotalMiles] = useState<string>(0);
 
   useEffect(() => {
+    const totalMeters = data.reduce((acc, curr) => acc + curr.count, 0)
+    setTotalMiles((totalMeters * 0.000621371).toFixed(2))
+
     // Initialize a Map with all days of the year
     const daysInYear = isLeapYear(year) ? 366 : 365;
     const date = new Date(year, 0, 1);
@@ -94,18 +98,43 @@ const Calendar: React.FC<CalendarProps> = ({ year, data, loading }) => {
   };
 
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: `repeat(${weeks.length}, 10px)`,
-        columnGap: "0.5rem",
-      }}
-    >
-      {weeks.map((week, idx) => (
-        <div key={idx} className={`col-${idx.toString()} flex flex-col`}>
-          {renderWeek(week)}
-        </div>
-      ))}
+    <div className="flex flex-col">
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: `repeat(${weeks.length}, 10px)`,
+          columnGap: "0.5rem",
+        }}
+      >
+        {weeks.map((week, idx) => (
+          <div key={idx} className={`col-${idx.toString()} flex flex-col`}>
+            {renderWeek(week)}
+          </div>
+        ))}
+      </div>
+      <div className="flex flex-row justify-between">
+          <div>
+            Total: {totalMiles}
+          </div>
+          <div className="flex flex-row space-x-2">
+            <div>
+              Less
+            </div>
+            <div className="flex flex-row space-x-1 items-center">
+              {colors.map((color, idx) => (
+                <div
+                key={`color-${idx}`}
+                className="w-4 h-4 rounded-sm"
+                style={{
+                  backgroundColor: color,
+                }}/>
+              ))}
+            </div>
+            <div>
+              More
+            </div>
+          </div>
+      </div>
     </div>
   );
 };
