@@ -58,7 +58,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if (session) {
+    if (session?.token?.access_token) {
       const before: number =
         new Date(new Date().getFullYear(), 0, 1).getTime() / 1000;
       const after: number =

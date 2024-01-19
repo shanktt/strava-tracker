@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 type CalendarProps = {
   year: number;
   data: Activity[];
-  // Add any additional props you might need
 };
 
 const isLeapYear = (year: number): boolean => {
@@ -84,14 +83,9 @@ const Calendar: React.FC<CalendarProps> = ({ year, data }) => {
     return week.map((day) => (
       <div
         key={day.date}
-        // className={day.date + "w-4 h-4 m-1 rounded-sm"}
-        className="w-[10px] h-[10px] m-[1px] rounded-sm"
+        className="w-4 h-4 mb-1 rounded-sm"
         style={{
           backgroundColor: day.isPadded ? "transparent" : colors[day.value],
-        //   width: "10px",
-        //   height: "10px",
-        //   margin: "1px",
-        //   borderRadius: "2px",
         }}
       />
     ));
@@ -102,14 +96,13 @@ const Calendar: React.FC<CalendarProps> = ({ year, data }) => {
       style={{
         display: "grid",
         gridTemplateColumns: `repeat(${weeks.length}, 10px)`,
-        gridGap: `2px`,
+        columnGap: "0.5rem"
       }}
     >
       {weeks.map((week, idx) => (
         <div
           key={idx}
-          className={idx.toString()}
-          style={{ display: "flex", flexDirection: "column" }}
+          className={`col-${idx.toString()} flex flex-col`}
         >
           {renderWeek(week)}
         </div>
