@@ -85,7 +85,7 @@ export default function Home() {
           setDistances(DateDistanceBins);
           setLoading(false);
         })
-        .catch((eror) => {
+        .catch((error) => {
           console.error("Fetch error:", error);
           setError("Failed to load data");
         });

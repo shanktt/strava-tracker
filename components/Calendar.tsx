@@ -86,7 +86,7 @@ const Calendar: React.FC<CalendarProps> = ({ year, data, loading }) => {
 
   const renderWeek = (week: Activity[]) => {
     return week.map((day, idx) => (
-      <div className="has-tooltip relative">
+      <div key={idx} className="has-tooltip relative">
         <div className="arrow-down tooltip absolute bg-gray-400 rounded text-xs -mt-8 p-1 whitespace-nowrap transform -translate-x-[45%]">
           {day.count.toFixed(2)} miles on {day.date}
         </div>
