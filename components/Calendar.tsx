@@ -1,4 +1,4 @@
-import { StravaData, ApiResponse, Activity } from "@/types/types";
+import { Activity } from "@/types/types";
 import React, { useState, useEffect } from "react";
 
 type CalendarProps = {
@@ -87,9 +87,11 @@ const Calendar: React.FC<CalendarProps> = ({ year, data, loading }) => {
   const renderWeek = (week: Activity[]) => {
     return week.map((day, idx) => (
       <div key={idx} className="has-tooltip relative">
-        <div className="arrow-down tooltip absolute bg-gray-400 rounded text-xs -mt-8 p-1 whitespace-nowrap transform -translate-x-[45%]">
-          {day.count.toFixed(2)} miles on {day.date}
-        </div>
+        {loading ? null : (
+          <div className="arrow-down tooltip absolute bg-gray-400 rounded text-xs -mt-8 p-1 whitespace-nowrap transform -translate-x-[45%]">
+            {day.count.toFixed(2)} miles on {day.date}
+          </div>
+        )}
         <div
           key={day.date}
           className={`w-4 h-4 mb-1 rounded-sm ${loading ? `pulsing-column` : ""}`}
