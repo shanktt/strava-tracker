@@ -39,3 +39,11 @@ body {
 .pulsing-column {
   animation: pulse 1.5s ease-in-out infinite;
 }
+
+.tooltip {
+  @apply invisible absolute;
+}
+
+.has-tooltip:hover .tooltip {
+  @apply visible z-50;
+}

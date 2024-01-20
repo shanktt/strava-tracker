@@ -52,6 +52,7 @@ export default function Home() {
 
   useEffect(() => {
     if (session?.token?.access_token) {
+      console.log("wtf");
       const before: number =
         new Date(new Date().getFullYear(), 0, 1).getTime() / 1000;
       const after: number =
@@ -71,7 +72,6 @@ export default function Home() {
         .then((response) => response.json())
         .then((data: StravaData[]) => {
           const DateDistanceBins = binData(data);
-          console.log(DateDistanceBins);
           setDistances(DateDistanceBins);
           setLoading(false);
         })
