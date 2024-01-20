@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AuthButton from "@/components/AuthButton";
 import Header from "@/components/Header";
 import { StravaData, Activity } from "@/types/types";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import Calendar from "@/components/Calendar";
 
 const levels: Array<[number, number]> = [
