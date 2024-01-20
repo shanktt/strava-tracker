@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import AuthButton from "@/components/login-btn";
+import AuthButton from "@/components/AuthButton";
 import Header from "@/components/Header";
 import { StravaData, Activity } from "@/types/types";
 import { useSession, signIn, signOut } from "next-auth/react";

@@ -1,4 +1,4 @@
-import AuthButton from "@/components/login-btn";
+import AuthButton from "@/components/AuthButton";
 import { useSession, signOut } from "next-auth/react";
 
 export default function Header() {
