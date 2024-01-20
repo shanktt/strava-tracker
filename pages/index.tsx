@@ -4,11 +4,11 @@ import { StravaData, Activity } from "@/types/types";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Calendar from "@/components/Calendar";
 
-const shades: Array<[number, string, number]> = [
-  [0.25, "#FE8548", 1],
-  [0.5, "#FE6A20", 2],
-  [0.75, "#F25301", 3],
-  [1.0, "#B73E01", 4],
+const levels: Array<[number, number]> = [
+  [0.25, 1],
+  [0.5, 2],
+  [0.75, 3],
+  [1.0, 4],
 ];
 
 interface DateDistanceBins {
@@ -20,6 +20,11 @@ export default function Home() {
   const [dailyData, setDistances] = useState<Activity[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+
+  function toFixedNumber(num: number, digits: number): number {
+    const pow = Math.pow(10, digits);
+    return Math.round(num * pow) / pow;
+  }
 
   function binData(data: StravaData[]): Activity[] {
     const bins = data.reduce((acc, d) => {
@@ -39,9 +44,13 @@ export default function Home() {
     Object.keys(bins).forEach((key) => {
       const distance = bins[key];
       const normalizedDistance = distance / maxDistance;
-      for (const [threshold, color, level] of shades) {
+      for (const [threshold, level] of levels) {
         if (normalizedDistance <= threshold) {
-          dailyData.push({ date: key, count: distance, value: level });
+          dailyData.push({
+            date: key,
+            count: toFixedNumber(distance * 0.000621371, 2),
+            value: level,
+          });
           break;
         }
       }

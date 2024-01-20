@@ -23,7 +23,7 @@ const Calendar: React.FC<CalendarProps> = ({ year, data, loading }) => {
 
   useEffect(() => {
     const totalMeters = data.reduce((acc, curr) => acc + curr.count, 0);
-    setTotalMiles((totalMeters * 0.000621371).toFixed(2));
+    setTotalMiles(totalMeters.toFixed(2));
 
     // Initialize a Map with all days of the year
     const daysInYear = isLeapYear(year) ? 366 : 365;
@@ -87,7 +87,7 @@ const Calendar: React.FC<CalendarProps> = ({ year, data, loading }) => {
   const renderWeek = (week: Activity[]) => {
     return week.map((day, idx) => (
       <div className="has-tooltip relative">
-        <div className="tooltip absolute bg-gray-400 rounded text-xs -mt-8 p-1 whitespace-nowrap transform -translate-x-[45%]">
+        <div className="arrow-down tooltip absolute bg-gray-400 rounded text-xs -mt-8 p-1 whitespace-nowrap transform -translate-x-[45%]">
           {day.count.toFixed(2)} miles on {day.date}
         </div>
         <div
@@ -117,24 +117,26 @@ const Calendar: React.FC<CalendarProps> = ({ year, data, loading }) => {
           </div>
         ))}
       </div>
-      <div className="flex flex-row justify-between">
-        <div>Total: {totalMiles}</div>
-        <div className="flex flex-row space-x-2">
-          <div>Less</div>
-          <div className="flex flex-row space-x-1 items-center">
-            {colors.map((color, idx) => (
-              <div
-                key={`color-${idx}`}
-                className="w-4 h-4 rounded-sm"
-                style={{
-                  backgroundColor: color,
-                }}
-              />
-            ))}
+      {!loading ? (
+        <div className="flex flex-row justify-between">
+          <div>Total: {totalMiles}</div>
+          <div className="flex flex-row space-x-2">
+            <div>Less</div>
+            <div className="flex flex-row space-x-1 items-center">
+              {colors.map((color, idx) => (
+                <div
+                  key={`color-${idx}`}
+                  className="w-4 h-4 rounded-sm"
+                  style={{
+                    backgroundColor: color,
+                  }}
+                />
+              ))}
+            </div>
+            <div>More</div>
           </div>
-          <div>More</div>
         </div>
-      </div>
+      ) : null}
     </div>
   );
 };
