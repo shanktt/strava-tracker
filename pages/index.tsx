@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Button from "@/components/login-btn";
+import AuthButton from "@/components/login-btn";
+import Header from "@/components/Header";
 import { StravaData, Activity } from "@/types/types";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Calendar from "@/components/Calendar";
@@ -92,11 +93,16 @@ export default function Home() {
   }, [session]);
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen">
-      <div className="relative top-20 z-10">
-        <Button />
+    <div className="flex flex-col">
+      <Header />
+      <div className="flex flex-col justify-center items-center h-screen">
+        {!session ? (
+          <div className="relative top-20 z-10">
+            <AuthButton text={"Sign In"} mthd={() => signIn("strava")} />
+          </div>
+        ) : null}
+        <Calendar data={dailyData} year={2023} loading={loading} />
       </div>
-      <Calendar data={dailyData} year={2023} loading={loading} />
     </div>
   );
 }
