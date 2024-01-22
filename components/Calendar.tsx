@@ -94,7 +94,7 @@ const Calendar: React.FC<CalendarProps> = ({ year, data, loading }) => {
         )}
         <div
           key={day.date}
-          className={`w-[0.3rem] h-[0.3rem] md:w-[0.8rem] md:h-[0.8rem] lg:w-[0.9rem] lg:h-[0.9rem] min-[1099px]:w-4 min-[1099px]:h-4 mb-0.5 md:mb-1 rounded-sm ${loading ? `pulsing-column` : ""}`}
+          className={`min-[320px]:w-[0.3rem] min-[320px]:h-[0.3rem] md:w-[0.8rem] md:h-[0.8rem] lg:w-[0.9rem] lg:h-[0.9rem] min-[1099px]:w-4 min-[1099px]:h-4 mb-0.5 md:mb-1 rounded-sm ${loading ? `pulsing-column` : ""}`}
           style={{
             backgroundColor: day.isPadded ? "transparent" : colors[day.value],
             animationDelay: loading ? `${idx * 0.1}s` : "0s",
@@ -105,7 +105,7 @@ const Calendar: React.FC<CalendarProps> = ({ year, data, loading }) => {
   };
 
   return (
-    <div className="flex flex-col overflow-hidden">
+    <div className="flex flex-col overflow-x-clip">
       <div
         style={{
           display: "grid",
@@ -114,7 +114,7 @@ const Calendar: React.FC<CalendarProps> = ({ year, data, loading }) => {
         }}
       >
         {weeks.map((week, idx) => (
-          <div key={idx} className={`col-${idx.toString()} flex flex-col mr-[0.08rem] md:mr-[0.08rem] lg:mr-1 min-[1099px]:mr-1`}>
+          <div key={idx} className={`col-${idx.toString()} flex flex-col mr-[0.04rem] md:mr-[0.08rem] lg:mr-1 min-[1099px]:mr-1`}>
             {renderWeek(week)}
           </div>  
         ))}
