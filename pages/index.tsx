@@ -62,7 +62,6 @@ export default function Home() {
 
   useEffect(() => {
     if (session?.token?.access_token) {
-      console.log("wtf");
       const before: number =
         new Date(new Date().getFullYear(), 0, 1).getTime() / 1000;
       const after: number =
@@ -94,7 +93,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col">
-      <Header />
+      <Header/>
       <div className="flex flex-col justify-center items-center h-screen">
         {!session ? (
           <div className="relative top-20 z-10">
