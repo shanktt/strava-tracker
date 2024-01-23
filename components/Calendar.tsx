@@ -86,7 +86,10 @@ const Calendar: React.FC<CalendarProps> = ({ year, data, loading }) => {
 
   const renderWeek = (week: Activity[]) => {
     return week.map((day, idx) => (
-      <div key={idx} className="has-tooltip relative">
+      <div 
+        key={idx} 
+        className="has-tooltip relative"
+      >
         {loading ? null : (
           <div className="arrow-down tooltip absolute bg-gray-400 rounded text-xs -mt-8 p-1 whitespace-nowrap transform -translate-x-[45%]">
             {day.count.toFixed(2)} miles on {day.date}
@@ -94,10 +97,13 @@ const Calendar: React.FC<CalendarProps> = ({ year, data, loading }) => {
         )}
         <div
           key={day.date}
-          className={`min-[320px]:w-[0.3rem] min-[320px]:h-[0.3rem] md:w-[0.8rem] md:h-[0.8rem] lg:w-[0.9rem] lg:h-[0.9rem] min-[1099px]:w-4 min-[1099px]:h-4 mb-0.5 md:mb-1 rounded-sm ${loading ? `pulsing-column` : ""}`}
+          className={`rounded-sm ${loading ? `pulsing-column` : ""}`}
           style={{
             backgroundColor: day.isPadded ? "transparent" : colors[day.value],
             animationDelay: loading ? `${idx * 0.1}s` : "0s",
+            width: `calc(${60 / weeks.length}vw)`, 
+            height: `calc(${60 / weeks.length}vw)`, 
+            marginBottom: "0.25rem"
           }}
         />
       </div>
@@ -105,16 +111,12 @@ const Calendar: React.FC<CalendarProps> = ({ year, data, loading }) => {
   };
 
   return (
-    <div className="flex flex-col overflow-x-clip">
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: `repeat(${weeks.length}, auto)`,
-          // columnGap: "0.5rem",
-        }}
+    <div className="flex flex-col overflow-x-clip p-4">
+      <div 
+        className="grid grid-flow-col auto-cols-fr gap-1"
       >
         {weeks.map((week, idx) => (
-          <div key={idx} className={`col-${idx.toString()} flex flex-col mr-[0.04rem] md:mr-[0.08rem] lg:mr-1 min-[1099px]:mr-1`}>
+          <div key={idx} className="flex flex-col">
             {renderWeek(week)}
           </div>  
         ))}
