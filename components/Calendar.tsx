@@ -97,13 +97,12 @@ const Calendar: React.FC<CalendarProps> = ({ year, data, loading }) => {
         )}
         <div
           key={day.date}
-          className={`rounded-sm ${loading ? `pulsing-column` : ""}`}
+          className={`mb-0.5 md:mb-1 rounded-sm ${loading ? `pulsing-column` : ""}`}
           style={{
             backgroundColor: day.isPadded ? "transparent" : colors[day.value],
             animationDelay: loading ? `${idx * 0.1}s` : "0s",
-            width: `calc(${60 / weeks.length}vw)`, 
-            height: `calc(${60 / weeks.length}vw)`, 
-            marginBottom: "0.25rem"
+            width: `calc(${60 / weeks.length}dvw)`, 
+            height: `calc(${60 / weeks.length}dvw)`, 
           }}
         />
       </div>
@@ -111,9 +110,9 @@ const Calendar: React.FC<CalendarProps> = ({ year, data, loading }) => {
   };
 
   return (
-    <div className="flex flex-col overflow-x-clip p-4">
+    <div className="flex flex-col p-4">
       <div 
-        className="grid grid-flow-col auto-cols-fr gap-1"
+        className="grid grid-flow-col auto-cols-fr gap-0.5 md:gap-1"
       >
         {weeks.map((week, idx) => (
           <div key={idx} className="flex flex-col">

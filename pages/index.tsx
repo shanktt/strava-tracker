@@ -92,7 +92,7 @@ export default function Home() {
   }, [session]);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col overflow-auto">
       <Header/>
       <div className="flex flex-col justify-center items-center h-screen">
         {!session ? (
